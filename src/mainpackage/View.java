@@ -47,7 +47,7 @@ public class View extends JFrame{
 		setTitle("Numerical Analysis Simulation");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setVisible(true);
-		setBounds(0,0,800,600);
+		setBounds(0,0,800,690);
 		setLocationRelativeTo(null);
 		addComponents();
 	
@@ -144,7 +144,7 @@ public class View extends JFrame{
 
 		  //chartPanel = new ChartPanel(chart);
 		  chartPanel.setChart(chart);
-		  chartPanel.setBounds(x, y, 500, 250);
+		  chartPanel.setBounds(x, y, 500, 270);
 		  pnlChartSimulation.add(chartPanel);
 		  repaint();
 	}
@@ -153,13 +153,14 @@ public class View extends JFrame{
 	{
 		chart = ChartFactory.createLineChart(
 		title, "X","f(X)" , dataset,
-		PlotOrientation.VERTICAL, false, true, false);
+		PlotOrientation.VERTICAL, true, true, false);
 				  
 		//Customization of bar graph
 		chart.getTitle().setFont(new Font("Tahoma",Font.PLAIN,20));
 				  
 		final CategoryPlot plot = chart.getCategoryPlot();
-		plot.setBackgroundPaint(Color.white);
+		plot.setBackgroundPaint(Color.lightGray);
+		plot.setRangeGridlinePaint(Color.white);
 		plot.getDomainAxis().setLabelFont(new Font("Tahoma",Font.PLAIN,15));
 		plot.getRangeAxis().setLabelFont(new Font("Tahoma",Font.PLAIN,15));
 			      

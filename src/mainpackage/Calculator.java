@@ -87,7 +87,7 @@ public class Calculator{
 		DefaultCategoryDataset tempDataset=new DefaultCategoryDataset();
 		for(int i = -10; i <= 10; i++)
 		{
-			tempDataset.addValue(f(i), "Frequency", Integer.toString(i));
+			tempDataset.addValue(f(i), "Polynomial", Integer.toString(i));
 		}
 		return tempDataset;
 	}
