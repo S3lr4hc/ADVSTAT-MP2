@@ -1,6 +1,9 @@
 package mainpackage;
 import java.util.ArrayList;
 
+import org.jfree.data.category.CategoryDataset;
+import org.jfree.data.category.DefaultCategoryDataset;
+
 
 public class Calculator{
 	
@@ -78,5 +81,14 @@ public class Calculator{
 	public void setTerms(ArrayList<Term>terms)
 	{
 		this.terms=terms;
+	}
+	
+	public CategoryDataset DatasetValues() {
+		DefaultCategoryDataset tempDataset=new DefaultCategoryDataset();
+		for(int i = -10; i <= 10; i++)
+		{
+			tempDataset.addValue(f(i), "Frequency", Integer.toString(i));
+		}
+		return tempDataset;
 	}
 }

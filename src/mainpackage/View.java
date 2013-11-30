@@ -1,5 +1,7 @@
 package mainpackage;
 
+import java.awt.Color;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -10,6 +12,19 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.JButton;
+
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
+import org.jfree.chart.plot.CategoryPlot;
+import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.chart.renderer.category.LineAndShapeRenderer;
+import org.jfree.chart.renderer.category.StandardBarPainter;
+import org.jfree.data.category.CategoryDataset;
+import org.jfree.data.category.DefaultCategoryDataset;
+
+import javax.swing.border.TitledBorder;
+import javax.swing.UIManager;
 
 
 public class View extends JFrame{
@@ -25,6 +40,9 @@ public class View extends JFrame{
 	private JPanel contentPane;
 	private JLabel lblOutputBisection;
 	private JLabel lblOutputNewton;
+	private JPanel pnlChartSimulation;
+	private JFreeChart chart;
+	private ChartPanel chartPanel;
 	public View() {
 		setTitle("Numerical Analysis Simulation");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -41,7 +59,7 @@ public class View extends JFrame{
 		//contentPane.setVisible(true);
 		contentPane.setSize(780,580);
 		
-		contentPane.setLayout(new MigLayout("", "[][grow][grow][]", "[][][][][][][][][][]"));
+		contentPane.setLayout(new MigLayout("", "[][grow][grow][]", "[][][][][][][][][][][grow]"));
 		
 		JLabel lblPolynomial = new JLabel("Polynomial:");
 		contentPane.add(lblPolynomial, "cell 0 1,alignx trailing");
@@ -110,6 +128,48 @@ public class View extends JFrame{
 		lblOutputNewton = new JLabel("");
 		contentPane.add(lblOutputNewton, "cell 2 9");
 		setContentPane(contentPane);
+		
+		pnlChartSimulation = new JPanel();
+		pnlChartSimulation.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Graph and Simulation", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		contentPane.add(pnlChartSimulation, "cell 0 10 4 1,grow");
+		pnlChartSimulation.setVisible(true);
+		
+		chartPanel=new ChartPanel(chart);
+	}
+
+	public void updateChart(JFreeChart chart, ChartPanel chartPanel, int x, int y)
+	{
+		  if(chartPanel!=null)
+	    	  pnlChartSimulation.remove(chartPanel);
+
+		  //chartPanel = new ChartPanel(chart);
+		  chartPanel.setChart(chart);
+		  chartPanel.setBounds(x, y, 500, 250);
+		  pnlChartSimulation.add(chartPanel);
+		  repaint();
+	}
+	
+	public void createChart(CategoryDataset dataset, String title,JFreeChart chart,ChartPanel chartPanel, int x, int y)
+	{
+		chart = ChartFactory.createLineChart(
+		title, "X","f(X)" , dataset,
+		PlotOrientation.VERTICAL, false, true, false);
+				  
+		//Customization of bar graph
+		chart.getTitle().setFont(new Font("Tahoma",Font.PLAIN,20));
+				  
+		final CategoryPlot plot = chart.getCategoryPlot();
+		plot.setBackgroundPaint(Color.white);
+		plot.getDomainAxis().setLabelFont(new Font("Tahoma",Font.PLAIN,15));
+		plot.getRangeAxis().setLabelFont(new Font("Tahoma",Font.PLAIN,15));
+			      
+		final LineAndShapeRenderer renderer = (LineAndShapeRenderer) plot.getRenderer();
+			      
+		renderer.setDrawOutlines(true);
+		renderer.setBaseShapesVisible(true);
+		renderer.setItemMargin(0.2);
+		renderer.setSeriesPaint(0, Color.green);
+		updateChart(chart, chartPanel, x, y);
 	}
 	
 	/*Functions to interface with controller*/
@@ -183,6 +243,21 @@ public class View extends JFrame{
 			//TODO: set up a table model based on list of results
 		}
 		
+	}
+	public JFreeChart getChart() {
+		return chart;
+	}
+
+	public void setChart(JFreeChart chart) {
+		this.chart = chart;
+	}
+
+	public ChartPanel getChartPanel() {
+		return chartPanel;
+	}
+
+	public void setChartPanel(ChartPanel chartPanel) {
+		this.chartPanel = chartPanel;
 	}
 	
 }
